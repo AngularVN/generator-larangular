@@ -1,0 +1,81 @@
+<form class="form-horizontal" name="form" ng-submit="submit()" novalidate role="form">
+    <div class="modal-header">
+        <button class="close" ng-click="dismiss()" type="button">×</button>
+        <h4 class="modal-title" id="my<%= _.capitalize(name) %>Label">
+        {{ <%= name %>.id ? "Edit" : "Create"}} a <%= _.capitalize(name) %>
+        </h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group" ng-show="<%= name %>.id">
+            <label class="col-sm-3 control-label" for="id">ID</label>
+            <div class="col-sm-9">
+                <input class="form-control" name="id" ng-model="<%= name %>.id" readonly type="text"/>
+            </div>
+        </div>
+        <% _.each(attrs, function (attr) { %>
+        <div class="form-group" ng-class="{'has-error': form.$dirty && form.<%= _.underscored(attr.attrName) %>.$invalid}">
+            <label for="<%= _.underscored(attr.attrName) %>" class="col-sm-3 control-label"><%= attr.attrName %></label>
+            <div class="col-sm-9">
+                <% if (attr.attrType === "String") { %>
+                <input type="text" class="form-control" placeholder="<%= attr.attrName %>" name="<%= _.underscored(attr.attrName) %>" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.minLength) { %> ng-minlength="<%= attr.minLength %>" <% } if (attr.maxLength) { %> ng-maxlength="<%= attr.maxLength %>"<% } %><% if (attr.required) { %> required<% } %> />
+                <% if (attr.minLength > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.minlength">Must be at least <%= attr.minLength %> characters.</span><% } %>
+                <% if (attr.maxLength > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.maxlength">Must be at most <%= attr.maxLength %> characters.</span><% } %>
+                <% } 
+
+                else if (attr.attrType === "Char") { %>
+                <input type="text" class="form-control" placeholder="<%= attr.attrName %>" name="<%= _.underscored(attr.attrName) %>" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.minLength) { %> ng-minlength="<%= attr.minLength %>" <% } if (attr.maxLength) { %> ng-maxlength="<%= attr.maxLength %>"<% } %><% if (attr.required) { %> required<% } %> />
+                <% if (attr.minLength > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.minlength">Must be at least <%= attr.minLength %> characters.</span><% } %>
+                <% if (attr.maxLength > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.maxlength">Must be at most <%= attr.maxLength %> characters.</span><% } %>
+                <% } 
+
+                else if (attr.attrType === "Text") { %>
+                <textarea class="form-control" placeholder="<%= attr.attrName %>" name="<%= _.underscored(attr.attrName) %>" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.minLength) { %> ng-minlength="<%= attr.minLength %>" <% } if (attr.maxLength) { %> ng-maxlength="<%= attr.maxLength %>"<% } %><% if (attr.required) { %> required<% } %> rows="5"></textarea>
+                <% if (attr.minLength > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.minlength">Must be at least <%= attr.minLength %> characters.</span><% } %>
+                <% if (attr.maxLength > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.maxlength">Must be at most <%= attr.maxLength %> characters.</span><% } %>
+                <% } 
+
+                else if (attr.attrType === "Email") { %>
+                <input type="email" class="form-control" placeholder="<%= attr.attrName %>" name="<%= _.underscored(attr.attrName) %>" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.required) { %> required<% } %> />
+                <span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$invalid">Must be a valid email address.</span>
+                <% } 
+
+                else if (attr.attrType === "Password") { %>
+                <input type="password" class="form-control" placeholder="<%= attr.attrName %>" name="<%= _.underscored(attr.attrName) %>" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.minLength) { %> ng-minlength="<%= attr.minLength %>" <% } if (attr.maxLength) { %> ng-maxlength="<%= attr.maxLength %>"<% } %><% if (attr.required) { %> required<% } %> />
+                <% if (attr.minLength > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.minlength">Must be at least <%= attr.minLength %> characters.</span><% } %>
+                <% if (attr.maxLength > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.maxlength">Must be at most <%= attr.maxLength %> characters.</span><% } %>
+                <span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error">Must be a valid password.</span>
+                <% } 
+
+                else if (attr.attrType === "Integer") { %>
+                <input type="number" class="form-control" placeholder="<%= attr.attrName %>" name="<%= _.underscored(attr.attrName) %>" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.min) { %> min="<%= attr.min %>" <% } if (attr.max) { %> max="<%= attr.max %>"<% } %><% if (attr.required) { %> required<% } %> />
+                <% if (attr.min > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.min">Must be greater than or equal to <%= attr.min %>.</span><% } %>
+                <% if (attr.max > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.max">Must be less than or equal to <%= attr.max %>.</span><% } %>
+                <% } 
+
+                else if (attr.attrType === "Float") { %>
+                <input type="number" step="any" class="form-control" placeholder="<%= attr.attrName %>" name="<%= _.underscored(attr.attrName) %>"
+                ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.min) { %> min="<%= attr.min %>" <% } if (attr.max) { %> max="<%= attr.max %>"<% } %><% if (attr.required) { %> required<% } %> />
+                <% if (attr.min > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.min">Must be greater than or equal to <%= attr.min %>.</span><% } %>
+                <% if (attr.max > 0) { %><span class="error" ng-show="form.<%= _.underscored(attr.attrName) %>.$error.max">Must be less than or equal to <%= attr.max %>.</span><% } %>
+                <% } 
+
+                else if (attr.attrType === "Boolean") { %>
+                <input type="checkbox" name="<%= _.underscored(attr.attrName) %>" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.required) { %> required<% } %> />
+                <% } 
+
+                else if (attr.attrType === "DateTime") { %>
+                <input type="text" class="form-control" placeholder="<%= attr.attrName %>" name="<%= _.underscored(attr.attrName) %>" ui-date="<%= _.underscored(attr.attrName) %>DateOptions" ui-date-format="yy-mm-dd" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.required) { %> required<% } %> />
+                <% } 
+
+                else if (attr.attrType === "Enum") { _.each(attr.enumValues, function (value) { %>
+                <label class="radio"><input type="radio" name="<%= _.underscored(attr.attrName) %>" value="<%= value %>" ng-model="<%= name %>.<%= _.underscored(attr.attrName) %>"<% if (attr.required) { %> required<% } %> /> <%= value %></label><% })
+                } %>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="dismiss()" type="button">Cancel</button>
+        <button class="btn btn-primary" ng-disabled="form.$invalid" type="submit">Save</button>
+    </div>
+</form>
